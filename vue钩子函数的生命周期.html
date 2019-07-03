@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>钩子函数的生命周期</title>
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <Vmain></Vmain>
+</div>
+<script type="text/javascript" src="../vuestudy/node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+
+    let Test = {
+        data() {
+            return {
+                msg: "hello",
+            }
+        },
+        template: `<div>
+                        {{msg}}
+                    <button @click="clickHandler">修改</button>
+                  </div>`,
+        methods: {
+            clickHandler() {
+                this.msg = "update"
+            }
+
+        },
+
+        // 钩子函数
+
+        beforeCreate() {
+            // 组件创建之前就会执行这个钩子函数 this.msg取不到值,显示undefined
+            console.log(this.msg)
+
+        },
+        created() {
+            // 组件创建时就会执行，可以操作数据，应用：发送ajax请求 ***
+            console.log(this.msg);
+            this.msg = "created"
+        },
+
+
+        beforeMount() {
+            // 装在数据到DOM之前会调用
+            console.log(document.getElementById("app"));
+        },
+        mounted() {
+            // 这里可以操作DOM    ***
+            // 装载数据到DOM之后会调用，可以获取真实存在的DOM元素，vue操作之后的DOM
+            console.log(document.getElementById("app"))
+
+        },
+
+
+        beforeUpdate() {
+            // DOM数据更新之前执行
+            console.log(document.getElementById("app").innerHTML)
+        },
+        updated() {
+            // DOM数据更新之后会执行，
+            console.log(document.getElementById("app").innerHTML)
+
+        },
+
+        // 销毁和创建消耗网页性能，一般不使用
+        beforeDestroy() {
+            // 组件销毁之前执行
+            console.log("beforeDestroy")
+        },
+        destroyed() {
+            // 组件销毁之后执行
+            console.log("destroyed")
+        },
+
+
+        activated() {
+            // 组件使用时就会执行
+            console.log("组件激活")
+        },
+        deactivated() {
+            // 组件停用时执行
+            console.log("组件停用")
+        }
+    };
+
+    let Vmain = {
+        data() {
+            return {
+                isShow: true
+            }
+        },
+        // keep-alive 用来停用或激活组件
+        template: `<div class="main">
+
+                   <keep-alive>
+                        <Test v-if = "isShow"></Test>
+                   </keep-alive>
+
+                   <button @click="isShow = !isShow">生死</button>
+
+                   </div>`,
+        components: {
+            Test
+        }
+    };
+
+    new Vue({
+        el: "#app",
+        template: ``,
+        components: {
+            Vmain
+        }
+    })
+</script>
+</body>
+</html>

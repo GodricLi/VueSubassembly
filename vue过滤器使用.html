@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+</head>
+<body>
+<div id="app">
+    <input v-model="msg" type="text" name="">
+    <p>{{msg}}</p>
+    <p>{{msg | reverse}}</p>
+
+    <input v-model="msg2" type="text" name="">
+    <p>{{msg2 | mark}}</p>
+
+
+</div>
+<script type="text/javascript" src="../vuestudy/node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    // 全局过滤器
+    // 第一个参数为组件名称，第二个参数为执行的操作
+    Vue.filter('reverse', function (value) {
+        return value.split('').reverse().join('');
+    });
+
+
+    new Vue({
+        el: "#app",
+        data: {
+            msg: "hello",
+            msg2: 555,
+        },
+        //局部过滤器使用
+        filters: {
+            mark: function (value) {
+                return '$' + value
+            }
+        }
+
+    })
+</script>
+</body>
+</html>
